@@ -237,4 +237,5 @@ These demonstrations verify that navigation tasks are dispatched only under safe
 - Implement a dynamic global planner to generate waypoints instead of relying on static files.
 - Extend the architecture to include a global planner, local planner, and controller for full autonomy.
 - Performance Analysis : Response times: Fast reaction to sensor-triggered state changes.
+- Add a QT based gui for the ease of giving user inputs for the mission 
 
