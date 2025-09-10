@@ -1,0 +1,73 @@
+@startuml PolarisDecisionMaker
+' Decision-Making Robotics Codebase Architecture
+
+package "Core Modules" {
+  class StateManager {
+    +IDLE
+    +RUNNING
+    +ERROR
+    ' Handles operational states
+    ' Modular, extensible
+  }
+  class SensorManager {
+    +Battery
+    +Temperature
+    +GPS Accuracy
+    +Network Signal
+    +Emergency Stop
+    ' Monitors sensors
+    ' Triggers and clears ERROR state
+  }
+  class Planner {
+    +Waypoints
+    +StateManager ref
+    ' High-level navigation planning
+    ' Sends waypoints only in safe state
+  }
+  class Controller {
+    +Path Tracking
+    ' Receives waypoints
+    ' Executes navigation
+  }
+}
+
+package "mock_sensors_node" {
+  class mock_sensors_node {
+    ' Battery Failure
+    ' Temperature Spike
+    ' GPS Fluctuation
+    ' Network Signal Fluctuation
+    ' Emergency Stop
+    ' Integration Test
+    ' Represents mock_sensors_node for scenario simulation
+  }
+}
+
+SensorManager --> StateManager : Updates state
+Planner --> StateManager : Checks current state
+Planner --> Controller : Sends waypoints
+TestScenarios --> SensorManager : Simulates sensor events
+TestScenarios --> StateManager : Verifies state transitions
+TestScenarios --> Planner : Verifies safe navigation
+
+note top of StateManager
+  Modular state management
+  Easy addition of new states
+end note
+
+note top of SensorManager
+  Sensor integration
+  Automated error handling
+end note
+
+note top of Planner
+  Navigation task planner
+  Interfaces with controller
+end note
+
+note top of TestScenarios
+  Scenario-based testing
+  Integration verification
+end note
+
+@enduml

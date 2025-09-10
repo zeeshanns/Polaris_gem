@@ -1,0 +1,12 @@
+<launch>
+    <arg name="controller_type" default="stanley" />
+
+    <group if="$(eval controller_type == 'stanley')">
+        <!-- Launch Stanley Controller -->
+        <node pkg="gem_stanley_sim" type="stanley_sim.py" name="stanley_sim" output="screen" />
+    </group>
+    <group if="$(eval controller_type == 'pure_pursuit')">
+        <!-- Launch Pure Pursuit Controller -->
+        <node pkg="gem_pure_pursuit_sim" type="pure_pursuit_sim.py" name="pure_pursuit_sim" output="screen" />
+    </group>
+</launch>

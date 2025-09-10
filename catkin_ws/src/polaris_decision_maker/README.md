@@ -151,90 +151,21 @@ Refer to the PlantUML diagram (`codebase_architecture.puml`) for a visual overvi
 
 ---
 
-
-**Key Features:**
-- Flexible selection of path-tracking controllers via launch file argument (`controller_type`).
-- Simple addition and expansion of robot states.
-- Modular architecture for easy maintenance and future upgrades.
-
----
-
-## Sensor Data State Management & Error Handling
-
-The system manages robot states using the following sensor thresholds:
-- **Battery level**: ERROR if ≤ 50%
-- **Temperature**: ERROR if ≥ 55°C
-- **GPS accuracy**: ERROR if < 200mm for ≥ 15s
-- **Network signal**: ERROR if unconnected for ≥ 10s, or low signal for ≥ 20s
-- **Emergency stop**: Immediate ERROR on activation
-
-Errors are cleared automatically when sensors return to safe operating thresholds.
-
----
-
-## Navigation Task Planner
-- The Planner determines when the robot should navigate, based on current state.
-- Waypoints are sent to the controller only when the robot is in RUNNING state.
-- The controller (Stanley or Pure Pursuit) is selected dynamically via launch file argument.
-- Waypoints can be added statically or dynamically via ROS topic (`/add_waypoint`).
-
----
-
-## Scenario Development & Testing
-
-The system supports the following test scenarios using `mock_sensors_node`:
-- **Battery Failure**: Drops from 100% to 51% over 30s, then to 49%. ERROR at 50%.
-- **Temperature Spike**: Rises from 30°C to 55°C over 30s, then 60°C. ERROR at 55°C.
-- **GPS Fluctuation**: High accuracy initially, goes < 200mm for 20s. ERROR if <200mm for ≥ 15s.
-- **Network Signal Fluctuation**: Connected, then low for 10s, then connected, then not connected for 20s.
-- **Emergency Stop**: Immediate ERROR on activation.
-
-Integration tests verify that navigation tasks are sent only under safe conditions.
-
----
-
-## Video Demonstration
-
-### 1. Navigation Task Planner (`demo_pure_pursuit.mkv`, `demo_stanley.mkv`)
-
-These videos demonstrate the navigation workflow and planner-controller interaction:
-
-- **Waypoint Management:**  
-  - The controller receives waypoints from the static `wps.csv` file (no dynamic global planner yet).
-  - In `sensor_monitor.cpp`, four demonstration waypoints are added to the planner:
-    - `{150.0, 100.0, 0.0}`
-    - `{0.0, 197.0, 0.0}`
-    - `{-130.0, 157.0, 0.0}`
-    - `{-100.0, 11.0, 0.0}`
-  - Waypoints are sent sequentially; `state_manager.cpp` dispatches the next waypoint once the previous goal is reached.
-  - The mission starts only when manually triggered via the `/start_mission` topic.
-  - The controller pauses for 5 seconds at each waypoint before proceeding.
-  - The system can be extended to accept interactive waypoint input from the user.
-
-### 2. Sensor State Transitions (`mock_state_transitions.mkv`)
-
-This video highlights sensor-driven state management and error handling:
-
-- **Battery Level:**  
-  - ERROR state if battery ≤ 50%.
-- **Temperature:**  
-  - ERROR state if temperature ≥ 55°C.
-- **GPS Accuracy:**  
-  - ERROR state if accuracy < 200 mm for ≥ 15 seconds.
-- **Internet Signal Strength:**  
-  - ERROR state if disconnected for ≥ 10 seconds.
-  - ERROR state if low signal for ≥ 20 seconds.
-- **Emergency Stop:**  
-  - Immediate ERROR state on activation.
-
-Errors are cleared automatically when sensor readings return to safe thresholds.
-
----
-
-These demonstrations verify that navigation tasks are dispatched only under safe conditions, and that the system robustly manages operational states in response to sensor events.
+## More Details: Video Demonstration
+- The system currently does not have a dynamic global planner; instead, the controller uses waypoints from the existing `wps.csv` file.
+- In `sensor_monitor.cpp`, four demonstration waypoints are added to the planner:
+  - `{150.0, 100.0, 0.0}`
+  - `{0.0, 197.0, 0.0}`
+  - `{-130.0, 157.0, 0.0}`
+  - `{-100.0, 11.0, 0.0}`
+- For ease of demonstration, these waypoints are sent sequentially to the controller. The logic in `state_manager.cpp` sends the next waypoint once the previous goal is reached.
+- This logic can be extended to accept waypoints from the user interactively; the system will wait for user input before proceeding to the next goal.
+- The mission only starts when a manual trigger is set using the `/start_mission` topic.
+- The controller stops for 5 seconds at each waypoint before executing the next, if available.
+- Whenever a new waypoint is received, the system processes and sends it to the controller.
 
 ### Improvements / Future Work
-- Implement a dynamic global planner to generate waypoints instead of relying on static files.
-- Extend the architecture to include a global planner, local planner, and controller for full autonomy.
-- Performance Analysis : Response times: Fast reaction to sensor-triggered state changes.
+- Implement a dynamic global planner to generate waypoints instead of relying on static `wps.csv` files.
+- Ideally, the architecture should include a global planner, local planner, and controller for full autonomy.
+
 

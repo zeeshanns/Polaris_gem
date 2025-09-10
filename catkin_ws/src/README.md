@@ -195,43 +195,24 @@ Integration tests verify that navigation tasks are sent only under safe conditio
 
 ## Video Demonstration
 
-### 1. Navigation Task Planner (`demo_pure_pursuit.mkv`, `demo_stanley.mkv`)
+The demonstration videos, `demo_pure_pursuit.mkv` and `demo_stanley.mkv`, showcase the system's operation as described below:
 
-These videos demonstrate the navigation workflow and planner-controller interaction:
+- The controller uses waypoints from the static `wps.csv` file (no dynamic global planner yet).
+- In `sensor_monitor.cpp`, four demonstration waypoints are added to the planner:
+  - `{150.0, 100.0, 0.0}`
+  - `{0.0, 197.0, 0.0}`
+  - `{-130.0, 157.0, 0.0}`
+  - `{-100.0, 11.0, 0.0}`
+- For demonstration, these waypoints are sent sequentially to the controller. The logic in `state_manager.cpp` sends the next waypoint once the previous goal is reached.
+- The system can be extended to accept waypoints interactively from the user, waiting for input before proceeding to the next goal.
+- The mission only starts when manually triggered via the `/start_mission` topic.
+- The controller stops for 5 seconds at each waypoint before proceeding to the next, if available.
+- Whenever a new waypoint is received, the system processes and sends it to the controller.
 
-- **Waypoint Management:**  
-  - The controller receives waypoints from the static `wps.csv` file (no dynamic global planner yet).
-  - In `sensor_monitor.cpp`, four demonstration waypoints are added to the planner:
-    - `{150.0, 100.0, 0.0}`
-    - `{0.0, 197.0, 0.0}`
-    - `{-130.0, 157.0, 0.0}`
-    - `{-100.0, 11.0, 0.0}`
-  - Waypoints are sent sequentially; `state_manager.cpp` dispatches the next waypoint once the previous goal is reached.
-  - The mission starts only when manually triggered via the `/start_mission` topic.
-  - The controller pauses for 5 seconds at each waypoint before proceeding.
-  - The system can be extended to accept interactive waypoint input from the user.
 
-### 2. Sensor State Transitions (`mock_state_transitions.mkv`)
+The demonstration videos, `demo_pure_pursuit.mkv` and `demo_stanley.mkv`, showcase the system's operation as described below:
 
-This video highlights sensor-driven state management and error handling:
 
-- **Battery Level:**  
-  - ERROR state if battery ≤ 50%.
-- **Temperature:**  
-  - ERROR state if temperature ≥ 55°C.
-- **GPS Accuracy:**  
-  - ERROR state if accuracy < 200 mm for ≥ 15 seconds.
-- **Internet Signal Strength:**  
-  - ERROR state if disconnected for ≥ 10 seconds.
-  - ERROR state if low signal for ≥ 20 seconds.
-- **Emergency Stop:**  
-  - Immediate ERROR state on activation.
-
-Errors are cleared automatically when sensor readings return to safe thresholds.
-
----
-
-These demonstrations verify that navigation tasks are dispatched only under safe conditions, and that the system robustly manages operational states in response to sensor events.
 
 ### Improvements / Future Work
 - Implement a dynamic global planner to generate waypoints instead of relying on static files.

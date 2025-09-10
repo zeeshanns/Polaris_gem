@@ -1,0 +1,50 @@
+@startuml
+' Assignment-driven PurePursuit Controller Structure
+
+class PurePursuit {
+    - rate: rospy.Rate
+    - look_ahead: float
+    - wheelbase: float
+    - goal: int
+    - ackermann_msg: AckermannDrive
+    - ackermann_pub: Publisher
+    - new_goal_received: bool
+    - special_points: list
+    - robot_state: str
+    - goal_pub: Publisher
+    - path_points_x: list
+    - path_points_y: list
+    - path_points_yaw: list
+    - dist_arr: np.array
+
+    + __init__()
+    + read_waypoints()
+    + dist(p1, p2)
+    + find_angle(v1, v2)
+    + get_gem_pose()
+    + waypoint_callback(msg)
+    + state_callback(msg)
+    + start_pp()
+}
+
+PurePursuit "1" -- "1" AckermannDrive : uses
+PurePursuit "1" -- "1" Publisher : publishes /gem/ackermann_cmd
+PurePursuit "1" -- "1" Publisher : publishes pp/goal_reached
+PurePursuit "1" -- "1" Subscriber : subscribes pp/waypoints
+PurePursuit "1" -- "1" Subscriber : subscribes pp/robot_state
+
+note right of PurePursuit
+Requirement 2: Code Structure & Flexibility
+- Modular class for easy controller swapping
+- ROS topics for portability and expansion
+
+Requirement 3: Sensor Data State Management & Error Handling
+- Handles robot_state (IDLE, RUNNING, ERROR)
+- Stops vehicle if not RUNNING
+
+Requirement 4: Navigation Task Planner
+- Receives waypoints dynamically
+- Stops for 5 seconds at each waypoint (only once)
+end note
+
+@enduml

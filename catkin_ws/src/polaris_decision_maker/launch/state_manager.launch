@@ -1,0 +1,17 @@
+<launch>
+
+    <!-- pure_pursuit/stanley -->
+
+    <arg name="controller_type" default="stanley"/>   
+    <param name="controller_type" value="$(arg controller_type)"/>
+
+    <!-- Launch Sensor Monitor Node -->
+    <node pkg="polaris_decision_maker" type="state_manager" name="state_manager" output="screen">
+        <remap from="/mock/battery_level" to="/gem/battery_state"/>
+        <remap from="/mock/temperature" to="/gem/temperature"/>
+        <remap from="/mock/gps_accuracy" to="/gem/gps/fix_"/>
+        <remap from="/mock/emergency_stop" to="/gem/estop"/>
+        <remap from="/mock/network_signal" to="/gem/network_signal"/>
+    </node>
+
+</launch>

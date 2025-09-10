@@ -1,0 +1,16 @@
+services:
+  assignment:
+    image: image_name:latest  # use the image_name built from Dockerfile
+    working_dir: /root/
+    network_mode: host
+    environment:
+      DISPLAY: $DISPLAY
+      QT_X11_NO_MITSHM: 1
+      XAUTHORITY: $XAUTHORITY
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $XAUTHORITY:$XAUTHORITY
+      - mount_directory/:/root/  # mount your working directory
+    stdin_open: true 
+    tty: true
+    privileged: true

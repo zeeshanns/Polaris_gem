@@ -1,0 +1,13 @@
+<launch>
+
+<node pkg="polaris_decision_maker" type="mock_sensors_node" name="mock_sensors_node" output="screen">
+    <!-- Remap mock topics to GEM simulator topics -->
+    <remap from="/mock/temperature" to="/gem/temperature"/>
+    <remap from="/mock/gps_accuracy" to="/gem/gps/fix_"/>
+    <remap from="/mock/emergency_stop" to="/gem/estop"/>
+    <remap from="/mock/network_signal" to="/gem/network_signal"/>
+    <remap from="/mock/battery_level" to="/gem/battery_state"/>
+</node>
+
+
+</launch>
