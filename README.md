@@ -37,19 +37,19 @@ This repository implements a modular, scalable decision-making and planning syst
 ---
 
 ### Codebase Architecture
-![Codebase Architecture](docs/uml/code_structure.png)
+![Codebase Architecture](docs/png/code_structure.png)
 [View PlantUML Source](docs/uml/code_structure.puml)
 
 ---
 
 ### Pure Pursuit Controller Interface
-![Pure Pursuit Controller UML](docs/uml/pure_pursuit_intyerface.png)
+![Pure Pursuit Controller UML](docs/png/pure_pursuit_interface.png)
 [View UML Source](docs/uml/pure_pursuit_intyerface.uml)
 
 ---
 
 ### Stanley Controller Interface
-![Stanley Controller UML](docs/uml/stanley_interface.png)
+![Stanley Controller UML](docs/png/stanley_interface.png)
 [View UML Source](docs/uml/stanley_interface.uml)
 
 ---
