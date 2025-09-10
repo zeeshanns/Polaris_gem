@@ -159,7 +159,7 @@ target_link_libraries(mock_sensors_node
 
 add_executable(state_manager src/sensor_monitor.cpp src/state_manager.cpp src/planner.cpp)
 # add_executable(state_manager src/state_manager.cpp)
-add_executable(planner_node src/planner_node.cpp src/planner.cpp src/state_manager.cpp)
+add_executable(planner_node test/planner_node.cpp src/planner.cpp src/state_manager.cpp)
 
 ## Link libraries
 target_link_libraries(state_manager ${catkin_LIBRARIES})
